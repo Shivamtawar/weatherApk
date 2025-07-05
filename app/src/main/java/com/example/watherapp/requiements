@@ -1,0 +1,8 @@
+1. API   --> It is a spllier of data from a server
+2. Screens -> 1 screen
+3. Retrofit --> it is  a library to smothly integrate
+
+@GET -> it fetches data
+@POST -> submit data to server
+@PUT -> Updates the data
+@DELETE -> deleteing some data
