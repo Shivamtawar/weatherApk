@@ -29,7 +29,7 @@ fun WeatherScreen(){
     LaunchedEffect(city) {
         try {
             val api = createApi()
-            val response = api.getCurrentWeather("54f8e53224404ec5ab3140652250407", city)
+            val response = api.getCurrentWeather("Your_API_KEY", city)
             temperature = response.current.temp_c
             description = response.current.condition.text
             location = "${response.location.name} , ${response.location.country}"
