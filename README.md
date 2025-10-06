@@ -1,26 +1,26 @@
-# Quiz App 📚
+# Weather App 🌤️
 
-A modern Android quiz application built with Kotlin and Jetpack Compose that provides an interactive quiz experience with multiple-choice questions and navigation between different screens.
+A modern Android weather application built with Kotlin and Jetpack Compose that provides real-time weather information for any city worldwide.
 
 ## 📱 Features
 
-- Interactive quiz interface with multiple-choice questions
-- Modern Material Design 3 UI
-- Navigation between different quiz screens
-- Score tracking and results display
-- Clean and intuitive user experience
-- Built with latest Android development technologies
+- Real-time weather data fetching
+- Clean and intuitive Material Design UI
+- Temperature display in Celsius
+- Weather condition descriptions
+- Location information display
+- Built with modern Android development stack
 
 ## 🛠️ Tech Stack
 
 - **Language**: Kotlin
 - **UI Framework**: Jetpack Compose
-- **Architecture**: Modern Android Architecture
-- **Navigation**: Navigation Compose
-- **Design System**: Material Design 3
+- **Architecture**: MVVM
+- **Networking**: Retrofit2 + Gson
+- **Coroutines**: Kotlinx Coroutines
+- **API**: WeatherAPI.com
 - **Min SDK**: 24 (Android 7.0)
 - **Target SDK**: 34
-- **Compile SDK**: 35
 
 ## 📋 Prerequisites
 
@@ -29,31 +29,107 @@ Before running this application, make sure you have:
 - Android Studio (Latest version recommended)
 - JDK 11 or higher
 - An Android device or emulator with API level 24+
-- Gradle 8.0+
+- WeatherAPI.com API key
 
 ## 🚀 Installation & Setup
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/Shivamtawar/QuizApp.git
-cd QuizApp
+git clone https://github.com/Shivamtawar/weatherApk.git
+cd weatherApk
 ```
 
-### 2. Open in Android Studio
-1. Launch Android Studio
-2. Select "Open an existing project"
-3. Navigate to the cloned repository folder
-4. Select the project and click "Open"
+### 2. Get API Key
+1. Visit [WeatherAPI.com](https://www.weatherapi.com/)
+2. Sign up for a free account
+3. Navigate to your dashboard and copy your API key
 
-### 3. Sync Dependencies
-1. Wait for Android Studio to automatically sync Gradle files
-2. If sync doesn't start automatically, click "Sync Now" in the notification bar
+### 3. Configure API Key
+1. Open `app/src/main/java/com/example/watherapp/WeatherScreen.kt`
+2. Replace `"Your_API_KEY"` with your actual API key:
+```kotlin
+val response = api.getCurrentWeather("YOUR_ACTUAL_API_KEY", city)
+```
 
 ### 4. Build and Run
-1. Connect your Android device or start an emulator
-2. Click the "Run" button (green play icon) in Android Studio
-3. Select your target device
-4. Wait for the app to build and install
+1. Open the project in Android Studio
+2. Sync the project with Gradle files
+3. Build and run the application on your device/emulator
+
+## 📡 API Documentation
+
+This app uses the [WeatherAPI.com](https://www.weatherapi.com/) Current Weather API.
+
+### API Endpoint
+```
+GET https://api.weatherapi.com/v1/current.json
+```
+
+### Request Parameters
+- `key`: Your API key (string, required)
+- `q`: City name (string, required)
+
+### Sample Request
+```
+https://api.weatherapi.com/v1/current.json?key=YOUR_API_KEY&q=London
+```
+
+### Response Structure
+
+The API returns a JSON response with the following structure:
+
+```json
+{
+  "location": {
+    "name": "London",
+    "country": "United Kingdom"
+  },
+  "current": {
+    "temp_c": 15.0,
+    "condition": {
+      "text": "Partly cloudy",
+      "icon": "//cdn.weatherapi.com/weather/64x64/day/116.png"
+    }
+  }
+}
+```
+
+### Response Fields Explained
+
+#### Location Object
+| Field | Type | Description |
+|-------|------|-------------|
+| `name` | String | City name |
+| `country` | String | Country name |
+
+#### Current Object
+| Field | Type | Description |
+|-------|------|-------------|
+| `temp_c` | Float | Temperature in Celsius |
+| `condition` | Object | Weather condition details |
+
+#### Condition Object
+| Field | Type | Description |
+|-------|------|-------------|
+| `text` | String | Weather condition description |
+| `icon` | String | Weather condition icon URL |
+
+### Sample Response
+```json
+{
+  "location": {
+    "name": "Mumbai",
+    "country": "India"
+  },
+  "current": {
+    "temp_c": 28.5,
+    "condition": {
+      "text": "Sunny",
+      "icon": "//cdn.weatherapi.com/weather/64x64/day/113.png"
+    }
+  }
+}
+```
 
 ## 🏗️ Project Structure
 
@@ -61,121 +137,62 @@ cd QuizApp
 app/
 ├── src/
 │   ├── main/
-│   │   ├── java/com/example/quizappminiproject/
-│   │   │   ├── MainActivity.kt              # Main activity
-│   │   │   ├── QuizScreen.kt               # Quiz interface composables
-│   │   │   ├── QuestionData.kt             # Data models for questions
-│   │   │   ├── ResultScreen.kt             # Results display screen
-│   │   │   ├── Navigation.kt               # Navigation setup
-│   │   │   └── ui/theme/                   # App theme and styling
-│   │   ├── res/
-│   │   │   ├── values/                     # App resources
-│   │   │   └── drawable/                   # App icons and images
+│   │   ├── java/com/example/watherapp/
+│   │   │   ├── MainActivity.kt          # Main activity
+│   │   │   ├── WeatherApi.kt           # Retrofit API interface
+│   │   │   ├── WeatherResponse.kt      # Data classes for API response
+│   │   │   ├── WeatherScreen.kt        # Main UI composable
+│   │   │   └── ui/theme/               # App theme and styling
 │   │   └── AndroidManifest.xml
-│   ├── androidTest/                        # Instrumented tests
-│   └── test/                               # Unit tests
-├── build.gradle.kts                        # App-level Gradle build file
-└── proguard-rules.pro                      # ProGuard configuration
+│   ├── androidTest/                    # Instrumented tests
+│   └── test/                           # Unit tests
+├── build.gradle.kts                    # App-level Gradle build file
+└── proguard-rules.pro                  # ProGuard configuration
 ```
-
-## 🎮 App Flow
-
-### 1. Start Screen
-- Welcome screen with app branding
-- Start quiz button to begin the quiz
-
-### 2. Quiz Interface
-- Multiple-choice questions display
-- Question navigation (Next/Previous)
-- Progress indicator
-- Timer functionality (if implemented)
-
-### 3. Results Screen
-- Final score display
-- Performance feedback
-- Option to restart quiz
-- Share results functionality
-
-## 🔧 Key Dependencies
-
-The app uses the following main dependencies:
-
-```kotlin
-// Core Android libraries
-implementation("androidx.core:core-ktx")
-implementation("androidx.lifecycle:lifecycle-runtime-ktx")
-implementation("androidx.activity:activity-compose")
-
-// Jetpack Compose
-implementation("androidx.compose.ui:ui")
-implementation("androidx.compose.ui:ui-graphics")
-implementation("androidx.compose.ui:ui-tooling-preview")
-implementation("androidx.compose.material3:material3")
-
-// Navigation
-implementation("androidx.navigation:navigation-compose:2.7.5")
-
-// Testing
-testImplementation("junit:junit")
-androidTestImplementation("androidx.test.ext:junit")
-androidTestImplementation("androidx.test.espresso:espresso-core")
-```
-
-## 📊 Quiz Data Structure
-
-### Question Model
-```kotlin
-data class Question(
-    val id: Int,
-    val question: String,
-    val options: List<String>,
-    val correctAnswer: Int,
-    val explanation: String? = null
-)
-```
-
-### Quiz Categories
-- General Knowledge
-- Science & Technology
-- History
-- Geography
-- Sports
-- Entertainment
 
 ## 🎨 App Components
 
 ### MainActivity
 - Entry point of the application
-- Sets up the navigation and theme
+- Sets up the Compose content with the app theme
 
-### QuizScreen
-- Main quiz interface
-- Handles question display and user interactions
-- Manages quiz state and progress
+### WeatherApi
+- Retrofit interface for API calls
+- Defines the `getCurrentWeather` endpoint
+- Creates and configures the Retrofit instance
 
-### ResultScreen
-- Displays quiz results and score
-- Provides feedback based on performance
-- Options for retaking quiz
+### WeatherResponse
+- Data classes representing the API response structure
+- Includes `WeatherResponse`, `Location`, `Current`, and `Condition` classes
 
-### Navigation
-- Handles screen transitions
-- Manages app navigation state
-- Deep linking support
+### WeatherScreen
+- Main UI composable function
+- Handles weather data fetching and display
+- Shows loading states and error handling
 
 ## 🔧 Configuration
 
-### Customization Options
-- **Quiz Duration**: Modify timer settings
-- **Question Count**: Adjust number of questions per quiz
-- **Difficulty Levels**: Easy, Medium, Hard
-- **Categories**: Add or modify quiz categories
+### Default Settings
+- **Default City**: Nashik
+- **Temperature Unit**: Celsius
+- **API Base URL**: `https://api.weatherapi.com/v1/`
 
-### Theme Customization
-The app supports Material Design 3 theming:
-- Dynamic color support (Android 12+)
-- Light and dark theme variants
-- Custom color schemes
+### Customization
+You can modify the default city by changing the initial value in `WeatherScreen.kt`:
+```kotlin
+var city by remember { mutableStateOf("your_city_name") }
+```
+
+## 🚦 Error Handling
+
+The app includes comprehensive error handling:
+- Network connectivity issues
+- Invalid API keys
+- City not found
+- API rate limiting
+- General exceptions
+
+Error messages are displayed to the user with helpful information.
 
 ## 🧪 Testing
 
@@ -186,64 +203,44 @@ The app supports Material Design 3 theming:
 
 # Run instrumented tests
 ./gradlew connectedAndroidTest
-
-# Run all tests
-./gradlew check
 ```
 
-### Test Coverage
-- Unit tests for quiz logic
-- UI tests for user interactions
-- Integration tests for navigation
+### Test Structure
+- **Unit Tests**: Located in `app/src/test/`
+- **Instrumented Tests**: Located in `app/src/androidTest/`
 
-## 📱 Supported Android Versions
+## 📱 App Permissions
 
-- **Minimum SDK**: 24 (Android 7.0 Nougat)
-- **Target SDK**: 34 (Android 14)
-- **Recommended**: Android 8.0+ for best experience
+This app requires the following permission:
+- `INTERNET` - To fetch weather data from the API
 
-## 🚦 Error Handling
+## 🔄 API Rate Limits
 
-The app includes comprehensive error handling for:
-- Network connectivity issues (if applicable)
-- Invalid quiz data
-- Navigation errors
-- State management issues
-
-## 🔄 State Management
-
-- Uses Compose state management
-- ViewModel pattern for business logic
-- StateFlow for reactive data streams
-- Remember and rememberSaveable for UI state
-
-## 🎯 Performance Optimization
-
-- Lazy loading of quiz questions
-- Efficient Compose recomposition
-- Memory leak prevention
-- Optimized navigation transitions
+WeatherAPI.com free tier includes:
+- 1,000,000 calls per month
+- No rate limiting on requests
+- Real-time weather data
 
 ## 🐛 Troubleshooting
 
 ### Common Issues
 
-1. **Build failures**
-   - Clean and rebuild: `./gradlew clean build`
-   - Invalidate caches: File → Invalidate Caches and Restart
+1. **App crashes on startup**
+   - Ensure you have added your API key
+   - Check internet connectivity
 
-2. **Compose preview not working**
-   - Ensure you're using compatible Android Studio version
-   - Check Compose compiler version compatibility
+2. **No weather data displayed**
+   - Verify your API key is valid
+   - Check if the city name is spelled correctly
 
-3. **Navigation issues**
-   - Verify navigation graph setup
-   - Check route definitions
+3. **Build errors**
+   - Clean and rebuild the project
+   - Sync Gradle files
 
 ### Debug Tips
-- Use Android Studio's Layout Inspector for UI debugging
-- Enable Compose debugging in developer options
-- Check Logcat for runtime errors
+- Check Logcat for detailed error messages
+- Ensure your device/emulator has internet access
+- Verify API key permissions on WeatherAPI.com dashboard
 
 ## 📄 License
 
@@ -251,52 +248,33 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
 
-### Development Guidelines
+### Development Setup
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Follow Kotlin coding conventions
-4. Write tests for new features
-5. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-6. Push to the branch (`git push origin feature/AmazingFeature`)
-7. Open a Pull Request
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ## 📞 Support
 
 If you encounter any issues or have questions:
-1. Check the [Issues](https://github.com/Shivamtawar/QuizApp/issues) section
+1. Check the [Issues](https://github.com/Shivamtawar/weatherApk/issues) section
 2. Create a new issue with detailed information
 3. Contact the maintainer: [@Shivamtawar](https://github.com/Shivamtawar)
 
 ## 🔮 Future Enhancements
 
-- [ ] Online quiz database integration
-- [ ] User authentication and profiles
-- [ ] Leaderboards and achievements
-- [ ] Multiplayer quiz mode
-- [ ] Offline mode support
-- [ ] Quiz creation tools
-- [ ] Social sharing features
-- [ ] Analytics and progress tracking
-- [ ] Voice questions support
-- [ ] Accessibility improvements
-
-## 📈 Version History
-
-- **v1.0** - Initial release with basic quiz functionality
-- Core quiz features
-- Material Design 3 implementation
-- Navigation setup
-
-## 🙏 Acknowledgments
-
-- Android Jetpack Compose team
-- Material Design guidelines
-- Open source community
+- [ ] 7-day weather forecast
+- [ ] Weather maps integration
+- [ ] Location-based weather detection
+- [ ] Weather alerts and notifications
+- [ ] Multiple cities support
+- [ ] Weather history and trends
+- [ ] Dark/Light theme toggle
+- [ ] Weather widgets
 
 ---
 
 **Made with ❤️ by [Shivam Tawar](https://github.com/Shivamtawar)**
-
-*Happy Quizzing! 🎉*
