@@ -78,6 +78,10 @@ fun WeatherCard(weather: WeatherResponse) {
             ) {
                 WeatherStat(label = "Humidity", value = "${weather.current.humidity}%")
                 WeatherStat(label = "Wind", value = "${weather.current.wind_kph} km/h")
+                WeatherStat(label = "cloud", value = "${weather.current.cloud} %")
+                WeatherStat(label = "feels like", value = "${weather.current.feelslike_c} %")
+
+
             }
         }
     }

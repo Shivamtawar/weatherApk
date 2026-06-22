@@ -5,14 +5,14 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitInstance {
 
-    val api : WeatherAPI by lazy {
+    val api : QuoteApi by lazy {
         Retrofit.Builder()
 
-            .baseUrl("https://api.weatherapi.com/v1/")
+            .baseUrl("https://dummyjson.com/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(
-                WeatherAPI::class.java
+                QuoteApi::class.java
             )
     }
 }

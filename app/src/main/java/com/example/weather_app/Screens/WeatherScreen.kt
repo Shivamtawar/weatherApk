@@ -13,6 +13,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.weather_app.model.QuoteResponse
 import com.example.weather_app.model.WeatherResponse
 import com.example.weather_app.network.RetrofitInstance
 import com.example.weather_app.util.Constants
@@ -30,7 +31,7 @@ val WhiteDim = Color(0xFFB0B0B0)
 fun WeatherScreen() {
 
     var city by remember { mutableStateOf("") }
-    var weather by remember { mutableStateOf<WeatherResponse?>(null) }
+    var weather by remember { mutableStateOf<QuoteResponse?>(null) }
     var isLoading by remember { mutableStateOf(false) }
     var errorMsg by remember { mutableStateOf<String?>(null) }
 
@@ -103,7 +104,7 @@ fun WeatherScreen() {
                         errorMsg = null
                         weather = null
                         try {
-                            weather = RetrofitInstance.api.getWeather(Constants.API_KEY, city)
+                            weather = RetrofitInstance.api.getWeather()
                         } catch (e: Exception) {
                             e.printStackTrace()
                             errorMsg = "City not found. Try again."
@@ -151,9 +152,9 @@ fun WeatherScreen() {
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            weather?.let {
-                WeatherCard(it)
-            }
+//            weather?.let {
+//                WeatherCard(it)
+//            }
         }
     }
 }
