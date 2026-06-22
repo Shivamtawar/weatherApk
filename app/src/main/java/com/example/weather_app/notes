@@ -1,0 +1,15 @@
+Json
+
+
+--> javascrpt object notation --> it holds data in a strctured format
+
+
+{
+  "city" : "Pune" --> String
+  "temp" : 45 --> integer
+}
+
+
+Retrofit
+
+it is a  lib by squareup which is used to integrate apis in our ando=roid app using kotlin
