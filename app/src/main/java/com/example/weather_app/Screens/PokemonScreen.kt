@@ -2,40 +2,32 @@ package com.example.weather_app.Screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.weather_app.model.QuoteResponse
-import com.example.weather_app.model.WeatherResponse
+import com.example.weather_app.model.PokemonResponse
 import com.example.weather_app.network.RetrofitInstance
-import com.example.weather_app.util.Constants
 import kotlinx.coroutines.launch
 
-val OrangeAccent = Color(0xFFFF6B00)
-val OrangeSoft = Color(0xFFFF8C3A)
-val DarkBg = Color(0xFF121212)
-val SurfaceDark = Color(0xFF1E1E1E)
-val CardBg = Color(0xFF252525)
-val White = Color(0xFFFFFFFF)
-val WhiteDim = Color(0xFFB0B0B0)
-
 @Composable
-fun WeatherScreen() {
+fun PokemonScreen() {
 
-    var city by remember { mutableStateOf("") }
-    var weather by remember { mutableStateOf<QuoteResponse?>(null) }
+    var pokemonName by remember { mutableStateOf("") }
+    var pokemon by remember { mutableStateOf<PokemonResponse?>(null) }
     var isLoading by remember { mutableStateOf(false) }
     var errorMsg by remember { mutableStateOf<String?>(null) }
 
     val scope = rememberCoroutineScope()
+    val scrollState = rememberScrollState()
 
     Box(
         modifier = Modifier
@@ -45,20 +37,21 @@ fun WeatherScreen() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .verticalScroll(scrollState)
                 .padding(horizontal = 20.dp, vertical = 48.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
             // Header
             Text(
-                text = "⛅ Weather",
+                text = "Pokédex",
                 fontSize = 36.sp,
                 fontWeight = FontWeight.Bold,
                 color = OrangeAccent,
                 textAlign = TextAlign.Center
             )
             Text(
-                text = "Real-time forecasts",
+                text = "Search any Pokémon",
                 fontSize = 13.sp,
                 color = WhiteDim,
                 letterSpacing = 2.sp,
@@ -69,12 +62,12 @@ fun WeatherScreen() {
 
             // Search field
             OutlinedTextField(
-                value = city,
+                value = pokemonName,
                 onValueChange = {
-                    city = it
+                    pokemonName = it
                     errorMsg = null
                 },
-                label = { Text("City name", color = WhiteDim) },
+                label = { Text("Pokémon name or ID", color = WhiteDim) },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(14.dp),
@@ -95,19 +88,19 @@ fun WeatherScreen() {
             // Search button
             Button(
                 onClick = {
-                    if (city.isBlank()) {
-                        errorMsg = "Please enter a city name."
+                    if (pokemonName.isBlank()) {
+                        errorMsg = "Please enter a Pokémon name or ID."
                         return@Button
                     }
                     scope.launch {
                         isLoading = true
                         errorMsg = null
-                        weather = null
+                        pokemon = null
                         try {
-//                            weather = RetrofitInstance.api.getWeather()
+                            pokemon = RetrofitInstance.api.getPokemon(pokemonName.lowercase().trim())
                         } catch (e: Exception) {
                             e.printStackTrace()
-                            errorMsg = "City not found. Try again."
+                            errorMsg = "Pokémon not found. Check the name and try again."
                         } finally {
                             isLoading = false
                         }
@@ -131,7 +124,7 @@ fun WeatherScreen() {
                     )
                 } else {
                     Text(
-                        "Search",
+                        text = "Search",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold,
                         letterSpacing = 1.sp
@@ -152,9 +145,9 @@ fun WeatherScreen() {
 
             Spacer(modifier = Modifier.height(24.dp))
 
-//            weather?.let {
-//                WeatherCard(it)
-//            }
+            pokemon?.let {
+                PokemonCard(it)
+            }
         }
     }
 }

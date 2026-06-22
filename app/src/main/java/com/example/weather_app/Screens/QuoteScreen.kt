@@ -153,7 +153,7 @@ fun QuoteScreen() {
                         errorMsg = null
                         quote = null
                         try {
-                            quote = RetrofitInstance.api.getWeather()
+//                            quote = RetrofitInstance.api.getWeather()
                         } catch (e: Exception) {
                             e.printStackTrace()
                             errorMsg = "Couldn't fetch a quote. Try again."

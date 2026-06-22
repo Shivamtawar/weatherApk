@@ -5,14 +5,14 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitInstance {
 
-    val api : QuoteApi by lazy {
+    val api : PokemonApi by lazy {
         Retrofit.Builder()
 
-            .baseUrl("https://dummyjson.com/")
+            .baseUrl("https://pokeapi.co/api/v2/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(
-                QuoteApi::class.java
+                PokemonApi::class.java
             )
     }
 }

@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.weather_app.Screens.PokemonScreen
 import com.example.weather_app.Screens.QuoteScreen
 //import com.example.weather_app.Screens.WeatherScreen
 import com.example.weather_app.ui.theme.WeatherappTheme
@@ -21,7 +22,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             WeatherappTheme {
-                QuoteScreen()
+                PokemonScreen()
                 }
             }
         }
